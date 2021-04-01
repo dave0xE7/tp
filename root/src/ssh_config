@@ -1,0 +1,14 @@
+Host invidec.net
+   Port 22
+   HostName invidec.net
+   #User root
+   User autossh
+   IdentityFile /opt/plug/autossh/id_rsa
+   #LocalForward 127.0.0.1:22 localhost:3306
+#   RemoteForward 2222:localhost:22
+   ServerAliveInterval 60
+   ServerAliveCountMax 3
+   PubkeyAuthentication yes
+   StrictHostKeyChecking no
+#   PasswordAuthentication no   
+#   ExitOnForwardFailure yes

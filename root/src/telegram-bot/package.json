@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "node-telegram-bot-api": "^0.51.0",
+    "pino": "^6.11.2"
+  }
+}
