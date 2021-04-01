@@ -1,6 +1,10 @@
 #!/bin/bash
 
-targetPath=/opt/plug
+TARGET=/opt/plug
+
+if [ ! -d $TARGET ]; then
+    sudo mkdir $TARGET
+fi
 
 pkgs="curl wget nodejs"
 
@@ -23,24 +27,30 @@ if [ -f /etc/systemd/system/ssh.service ]; then
     sudo systemctl enable ssh
 fi;
 
-if [ ! -d $targetPath ]; then
-    sudo mkdir $targetPath
+if [ ! -d $TARGET ]; then
+    sudo mkdir $TARGET
 fi
 
-if [ ! -d $targetPath/autossh ]; then
-    sudo mkdir $targetPath/autossh
-    chown autossh.autossh $targetPath/autossh
+if [ ! -d $TARGET/autossh ]; then
+    sudo mkdir $TARGET/autossh
+    sudo chown autossh.autossh $TARGET/autossh
 fi
 
-useradd -r -s /bin/false -d /opt/plug/autossh autossh
+sudo useradd -r -s /bin/false -d /opt/plug/autossh autossh
 
-sudo cp ssh_config $targetPath/autossh/ssh_config
+sudo cp ssh_config $TARGET/autossh/ssh_config
 
-if [ ! -f $targetPath/autossh/id_rsa ]; then
+sudo cp shared_rsa $TARGET/autossh/shared_rsa
+sudo cp shared_rsa.pub $TARGET/autossh/shared_rsa.pub
+
+if [ ! -f $TARGET/autossh/id_rsa ]; then
     sudo -u autossh ssh-keygen -f /opt/plug/autossh/id_rsa -t rsa -N ''
 fi
 
-sudo cp main.sh $targetPath/.
+sudo chown -R autossh.autossh $TARGET/autossh
+sudo chmod -R 600 $TARGET/autossh
+
+sudo cp main.sh $TARGET/.
 
 sudo cp systemd/*.service /etc/systemd/system/.
 
@@ -52,8 +62,6 @@ if [ ! -f /opt/plug/hostid ]; then
 
 fi
 
-chown -R autossh.autossh $targetPath/autossh
-chmod -R 600 $targetPath/autossh
 
 sudo systemctl daemon-reload
 sudo systemctl restart plug
