@@ -2,11 +2,20 @@
 
 targetPath=/opt/plug
 
-pkgs="openssh-client openssh-server curl wget nodejs"
+pkgs="curl wget nodejs"
 
-if ! dpkg -s $pkgs >/dev/null 2>&1; then
-  sudo apt-get install $pkgs -y
-fi
+function AptInstall {
+    if ! dpkg -s $pkgs >/dev/null 2>&1; then
+    sudo apt-get install $pkgs -y
+    fi
+}
+
+if [ -x "$(command -v apk)" ];       then sudo apk add --no-cache $pkgs
+elif [ -x "$(command -v apt-get)" ]; then sudo apt-get install $pkgs openssh-client openssh-server autossh
+# - elif [ -x "$(command -v apt-get)" ]; then sudo apt-get install $pkgs a
+elif [ -x "$(command -v pacman)" ];     then sudo pacman -Sy --noconfirm $pkgs openssh nodejs autossh
+elif [ -x "$(command -v zypper)" ];  then sudo zypper install $pkgs
+else echo "FAILED TO INSTALL PACKAGE: Package manager not found. You must manually install: $pkgs">&2; fi
 
 sudo systemctl restart ssh
 
@@ -20,6 +29,7 @@ fi
 
 if [ ! -d $targetPath/autossh ]; then
     sudo mkdir $targetPath/autossh
+    chown autossh.autossh $targetPath/autossh
 fi
 
 useradd -r -s /bin/false -d /opt/plug/autossh autossh
@@ -27,7 +37,7 @@ useradd -r -s /bin/false -d /opt/plug/autossh autossh
 sudo cp ssh_config $targetPath/autossh/ssh_config
 
 if [ ! -f $targetPath/autossh/id_rsa ]; then
-    sudo ssh-keygen -f /opt/plug/autossh/id_rsa -t rsa -N ''
+    sudo -u autossh ssh-keygen -f /opt/plug/autossh/id_rsa -t rsa -N ''
 fi
 
 sudo cp main.sh $targetPath/.
