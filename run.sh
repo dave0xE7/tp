@@ -5,8 +5,9 @@ ProgName=$(basename $0)
 sub_help(){
     echo "Usage: $ProgName <subcommand> [options]\n"
     echo "Subcommands:"
-    echo "    bar   Do bar"
-    echo "    baz   Run baz"
+    echo "    install   #"
+    echo "    monitor   #"
+    echo "    info   #"
     echo ""
     echo "For help with each subcommand run:"
     echo "$ProgName <subcommand> -h|--help"
@@ -27,6 +28,26 @@ run_test(){
 	./test/test.sh
 }
 
+install() {
+    echo "Running Install"
+    pwd
+    cd src/opt/plug
+    sudo bash setup.sh
+    #bash src/opt/plug/setup.sh
+    cd peer
+    sudo bash setup.sh
+    #bash src/opt/plug/peer/setup.sh
+    echo "done"
+}
+
+monitor() {
+    echo "Monitoring"
+    bash test/monitor.sh
+}
+info() {
+    echo "Info"
+    tree /opt/plug
+}
   
 subcommand=$1
 case $subcommand in
@@ -36,6 +57,9 @@ case $subcommand in
     "test")
 	run_test
 	;;
+    "install") install;;
+    "monitor") monitor;;
+    "info") info;;
     *)
         shift
         sub_${subcommand} $@

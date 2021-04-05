@@ -40,8 +40,8 @@ sudo useradd -r -s /bin/false -d /opt/plug/autossh autossh
 
 sudo cp ssh_config $TARGET/autossh/ssh_config
 
-sudo cp shared_rsa $TARGET/autossh/shared_rsa
-sudo cp shared_rsa.pub $TARGET/autossh/shared_rsa.pub
+sudo cp ../../assets/shared_rsa $TARGET/autossh/shared_rsa
+sudo cp ../../assets/shared_rsa.pub $TARGET/autossh/shared_rsa.pub
 
 if [ ! -f $TARGET/autossh/id_rsa ]; then
     sudo -u autossh ssh-keygen -f /opt/plug/autossh/id_rsa -t rsa -N ''
@@ -62,11 +62,18 @@ if [ ! -f /opt/plug/hostid ]; then
 
 fi
 
+if [ ! -f /root/.ssh/id_rsa ]; then
+    sudo -u root ssh-keygen -f /root/.ssh/id_rsa -t rsa -N ''
+fi
+
+if [ ! -f /root/.ssh/authorized_keys ]; then
+    touch /root/.ssh/authorized_keys
+fi
 
 sudo systemctl daemon-reload
 sudo systemctl restart plug
 sudo systemctl status plug
 
-sudo systemctl enable autossh@5000
-sudo systemctl start autossh@5000
-sudo systemctl status autossh@5000
+#sudo systemctl enable autossh@5000
+#sudo systemctl start autossh@5000
+#sudo systemctl status autossh@5000

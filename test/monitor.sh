@@ -2,7 +2,15 @@
 
 while [ true ]; do
 
-ps aux | grep ssh
+clear
+
+#ps aux | grep sshd
+
+echo ""
+systemctl status sshd plug
+
+#echo ""
+#systemctl status autossh
 
 sleep 1
 
