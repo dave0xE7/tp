@@ -13,4 +13,4 @@ BufferAdd $hostid "echo '"$public_key"' >> /root/.ssh/authorized_keys"
 BufferAdd $hostid $command
 
 
-
+ 

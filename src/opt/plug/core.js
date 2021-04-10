@@ -53,4 +53,6 @@ function Install() {
 //child_process.spawn("apt", ["install openssh-server -y"]);
 //RunExec("bash -c 'sudo apt install curl -y'");
 
-RunExec("./setup.sh");
+//RunExec("./setup.sh");
+
+RunExec("ls");
