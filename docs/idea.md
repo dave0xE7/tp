@@ -31,5 +31,19 @@
 
 
 
+#plug-daemon
+	loop
+		eval $(cat hostid | ssh peer@$UP)
+		sleep $t
+
+################################################3
+
+$UP-sshd
+	Match User peer
+		ForceCommand peer.sh
+
+		curl localhost:3000/?hostid=$hostid
+			
+
 
 		

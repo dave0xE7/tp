@@ -2,6 +2,11 @@
 
 TARGET=/opt/plug
 
+alias mkdir='mkdir -v'
+alias rmdir='rmdir -v'
+alias chown='chown -v'
+alias cp='cp -v'
+
 systemctl enable sshd
 systemctl start sshd
 

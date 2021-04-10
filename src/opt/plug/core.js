@@ -4,14 +4,26 @@
 const fs = require('fs');
 const child_process = require('child_process');
 
+// function RunExec (cmd) {
+//     child_process.exec(cmd, (e, stdout, stderr)=> {
+//         if (e instanceof Error) {
+//             console.error(e);
+//             throw e;
+//         }
+//         console.log('stdout ', stdout);
+//         console.log('stderr ', stderr);
+//     });
+// }
+
 function RunExec (cmd) {
     child_process.exec(cmd, (e, stdout, stderr)=> {
         if (e instanceof Error) {
             console.error(e);
             throw e;
         }
-        console.log('stdout ', stdout);
-        console.log('stderr ', stderr);
+        return stdout;
+        //console.log('stdout ', stdout);
+        //console.log('stderr ', stderr);
     });
 }
 
@@ -55,4 +67,6 @@ function Install() {
 
 //RunExec("./setup.sh");
 
-RunExec("ls");
+var result = child_process.execSync("ls");
+
+console.log(result.toString());
