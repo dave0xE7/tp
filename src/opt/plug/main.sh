@@ -7,12 +7,19 @@ transport=TRUE
 transportInterval=45
 transportLast=""
 
+hostid=""
+
+PEER=peer@invidec.net
+
 node_init(){
 	echo "initialized"
-	if [ -f /opt/plug/hostid ]; then
-		echo "hostid: "
-		cat /opt/plug/hostid
+	echo $(pwd)
+
+	if [ ! -f /opt/plug/hostid ]; then
+		. /opt/plug/postinstall.sh
 	fi
+
+	hostid=$(cat /opt/plug/hostid)
 }
 
 node_loop(){
@@ -21,9 +28,9 @@ node_loop(){
 
 		#source "config"
 
-		peerresult=$(cat /opt/plug/hostid | ssh -T peer@localhost -i /opt/plug/autossh/shared_rsa)
-		echo $peerresult
-		eval $peerresult
+		work=$(echo $hostid | ssh -T $PEER -i /opt/plug/ssh/shared_rsa)
+		echo $work
+		eval $work
 
 		echo "sleeping for $interval"
 		sleep $interval

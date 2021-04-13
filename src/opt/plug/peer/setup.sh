@@ -2,11 +2,13 @@
 
 TARGET=/opt/plug
 
+# changeing these commands to get more debug information
 alias mkdir='mkdir -v'
 alias rmdir='rmdir -v'
 alias chown='chown -v'
 alias cp='cp -v'
 
+# enabling ssh server
 systemctl enable sshd
 systemctl start sshd
 
@@ -26,6 +28,8 @@ if [ ! -d $TARGET/peer/.ssh ]; then
     sudo mkdir $TARGET/peer/.ssh
     sudo cat $TARGET/autossh/shared_rsa.pub >> $TARGET/peer/.ssh/authorized_keys
     sudo chown -R peer.peer $TARGET/peer/.ssh
+    sudo chmod 0700 $TARGET/peer/.ssh
+    sudo chmod 0600 $TARGET/peer/.ssh/authorized_keys
 fi
 
 if [ ! -f $TARGET/peer/id_rsa ]; then

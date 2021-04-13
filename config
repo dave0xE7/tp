@@ -1,0 +1,19 @@
+#!/bin/bash
+
+DEBUG=TRUE
+
+TARGET=/opt/plug
+
+PEER=peer@invidec.net
+
+CWD=$(pwd)
+
+
+# changeing these commands to get more debug information
+alias mkdir='mkdir -v'
+alias rmdir='rmdir -v'
+alias chown='chown -v'
+alias cp='cp --verbose'
+alias rm='rm -v'
+
+echo "config loaded"

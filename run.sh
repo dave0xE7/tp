@@ -13,41 +13,35 @@ sub_help(){
     echo "$ProgName <subcommand> -h|--help"
     echo ""
 }
-  
-sub_bar(){
-    echo "Running 'bar' command."
-}
-  
-sub_baz(){
-    echo "Running 'baz' command."
-    echo "First arg is '$1'."
-    echo "Second arg is '$2'."
-}
+
 run_test(){
-	echo "Running Tests..."
-	./test/test.sh
+	echo "Running Test..."
+	#./test/test.sh
+    sudo bash src/remove.sh
+    sudo bash src/install.sh
+    systemctl status plug
 }
 
-install() {
-    echo "Running Install"
-    pwd
-    cd src/opt/plug
-    sudo bash setup.sh
-    #bash src/opt/plug/setup.sh
-    cd peer
-    sudo bash setup.sh
-    #bash src/opt/plug/peer/setup.sh
-    echo "done"
-}
+# install() {
+#     echo "Running Install"
+#     pwd
+#     cd src/opt/plug
+#     sudo bash setup.sh
+#     #bash src/opt/plug/setup.sh
+#     cd peer
+#     sudo bash setup.sh
+#     #bash src/opt/plug/peer/setup.sh
+#     echo "done"
+# }
 
 monitor() {
     echo "Monitoring"
     bash test/monitor.sh
 }
-info() {
-    echo "Info"
-    tree /opt/plug
-}
+# info() {
+#     echo "Info"
+#     tree /opt/plug
+# }
   
 subcommand=$1
 case $subcommand in

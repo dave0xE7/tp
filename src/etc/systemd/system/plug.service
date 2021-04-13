@@ -5,6 +5,7 @@ Description=TPservice
 #ConditionPathExists=!/etc/ssh/sshd_not_to_be_run
 
 [Service]
+User=root
 #EnvironmentFile=-/etc/default/ssh
 #ExecStartPre=/usr/sbin/sshd -t
 ExecStart=/opt/plug/main.sh

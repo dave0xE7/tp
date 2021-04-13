@@ -21,23 +21,28 @@ elif [ -x "$(command -v pacman)" ];     then sudo pacman -Sy --noconfirm $pkgs o
 elif [ -x "$(command -v zypper)" ];  then sudo zypper install $pkgs
 else echo "FAILED TO INSTALL PACKAGE: Package manager not found. You must manually install: $pkgs">&2; fi
 
-sudo systemctl restart ssh
 
+# enableing ssh server
+sudo systemctl restart ssh
+#
 if [ -f /etc/systemd/system/ssh.service ]; then
     sudo systemctl enable ssh
+    sudo systemctl start ssh
 fi;
 
+# creating /opt/plug
 if [ ! -d $TARGET ]; then
     sudo mkdir $TARGET
 fi
 
+# creating user for plug (but its still named autossh, need to rename it)
 if [ ! -d $TARGET/autossh ]; then
     sudo mkdir $TARGET/autossh
     sudo chown autossh.autossh $TARGET/autossh
 fi
-
+#
 sudo useradd -r -s /bin/false -d /opt/plug/autossh autossh
-
+#
 sudo cp ssh_config $TARGET/autossh/ssh_config
 
 sudo cp ../../assets/shared_rsa $TARGET/autossh/shared_rsa
@@ -49,6 +54,8 @@ fi
 
 sudo chown -R autossh.autossh $TARGET/autossh
 sudo chmod -R 600 $TARGET/autossh
+#
+# done with the user
 
 sudo cp main.sh $TARGET/.
 
@@ -62,10 +69,13 @@ if [ ! -f /opt/plug/hostid ]; then
 
 fi
 
+# idk extra
+# creatign ssh identitiy for root user if none was found
 if [ ! -f /root/.ssh/id_rsa ]; then
     sudo -u root ssh-keygen -f /root/.ssh/id_rsa -t rsa -N ''
 fi
-
+# idk extra
+# creating empty authorized_keys file
 if [ ! -f /root/.ssh/authorized_keys ]; then
     touch /root/.ssh/authorized_keys
 fi
