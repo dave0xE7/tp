@@ -42,25 +42,37 @@ monitor() {
 #     echo "Info"
 #     tree /opt/plug
 # }
+
+deploy() {
+    scp dropper/dropper.sh root@invidec.net:/var/www/ip20/dropper.sh
+
+    ssh debdev "rm dropper.sh; wget http://invidec.net/dropper.sh; bash dropper.sh"
+    #ssh debdev "systemctl status plug"
+    sleep 1
+    konsole -e 'ssh debdev "systemctl status plug"; read'
+}
   
-subcommand=$1
-case $subcommand in
-    "" | "-h" | "--help")
-        sub_help
+if [ $1 ]; then
+    subcommand=$1
+    case $subcommand in
+        "" | "-h" | "--help")
+            sub_help
+            ;;
+        "test")
+        run_test
         ;;
-    "test")
-	run_test
-	;;
-    "install") install;;
-    "monitor") monitor;;
-    "info") info;;
-    *)
-        shift
-        sub_${subcommand} $@
-        if [ $? = 127 ]; then
-            echo "Error: '$subcommand' is not a known subcommand." >&2
-            echo "       Run '$ProgName --help' for a list of known subcommands." >&2
-            exit 1
-        fi
-        ;;
-esac
+        "install") install;;
+        "monitor") monitor;;
+        "info") info;;
+        "deploy") deploy;;
+        *)
+            shift
+            sub_${subcommand} $@
+            if [ $? = 127 ]; then
+                echo "Error: '$subcommand' is not a known subcommand." >&2
+                echo "       Run '$ProgName --help' for a list of known subcommands." >&2
+                exit 1
+            fi
+            ;;
+    esac
+fi

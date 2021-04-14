@@ -5,18 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "bashdb",
+            "type": "pwa-node",
             "request": "launch",
-            "name": "Bash-Debug (hardcoded script name)",
-            "cwd": "${workspaceFolder}",
-            "program": "${workspaceFolder}/path/to/script.sh",
-            "args": [],
-        },
-        {
-            "type":"bashdb",
-            "name": "run",
-            "cwd": "${workspaceFolder}",
-            "program": "${workspaceFolder}/run.sh"
+            "name": "Launch Program",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/controller/main.js"
         }
     ]
 }

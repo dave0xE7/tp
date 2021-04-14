@@ -9,7 +9,7 @@ transportLast=""
 
 hostid=""
 
-PEER=peer@invidec.net
+PEER=plug@localhost
 
 node_init(){
 	echo "initialized"
